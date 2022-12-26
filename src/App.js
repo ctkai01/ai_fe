@@ -1,24 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Redirect,
+  Switch,
+} from "react-router-dom";
+import Home from "./Home";
+import Login from "./Login";
 
 function App() {
+  const isLogin = localStorage.getItem("auth");
+  console.log("Is log", isLogin)
+  if (isLogin && window.location.pathname === '/login') {
+    window.location.replace('/');
+  }
+
+  if (!isLogin && window.location.pathname === '/') {
+    window.location.replace('/login');
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      {isLogin ? (
+        <Switch>
+          <Route path="/" component={Home} exact={true}/>
+          {/* <Route>Sorry, this page isn't available</Route> */}
+        </Switch>
+      ) : (
+        <Switch>
+          <Route path="/login" component={Login} exact={true}/>
+          {/* <Route>Sorry, this page isn't available</Route> */}
+        </Switch>
+      )}
+    </BrowserRouter>
   );
 }
 
